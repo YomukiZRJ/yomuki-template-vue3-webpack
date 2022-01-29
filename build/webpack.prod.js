@@ -3,21 +3,50 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 13:39:17
+ * @LastEditTime: 2022-01-29 14:40:59
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
-  { CleanWebpackPlugin } = require("clean-webpack-plugin");
+  BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: "production",
   module: {},
   plugins: [
-    new CleanWebpackPlugin(), // 每次打包的时候，都会把 dist 目录清空，防止文件变动后，还有残留一些老的文件，以及避免一些缓存问题。
+    new BundleAnalyzerPlugin({
+      openAnalyzer: true,
+    }),
   ],
   output: {
     filename: "js/[name].[contenthash].js", //contenthash 若文件内容无变化，则contenthash 名称不变
     path: path.resolve(__dirname, "../dist"),
+    clean: true,
+  },
+  optimization: {
+    splitChunks: {
+      // 选择哪些 chunk 进行优化，默认async，即只对动态导入形成的chunk进行优化。
+      chunks: "all",
+      // 提取chunk最小体积
+      minSize: 20000,
+      // 要提取的chunk最少被引用次数
+      minChunks: 1,
+      // 对要提取的chunk进行分组
+      cacheGroups: {
+        // 匹配node_modules中的三方库，将其打包成一个chunk
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          // chunk名称
+          name: "vendors",
+          priority: -10,
+        },
+        default: {
+          // 将至少被两个chunk引入的模块提取出来打包成单独chunk
+          minChunks: 2,
+          name: "default",
+          priority: -20,
+        },
+      },
+    },
   },
 });

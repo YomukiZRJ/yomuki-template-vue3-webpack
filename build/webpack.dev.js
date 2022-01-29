@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:36:51
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 13:38:13
+ * @LastEditTime: 2022-01-29 14:23:03
  */
 const { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
@@ -13,6 +13,7 @@ module.exports = merge(common, {
   output: {
     filename: "js/[name].[hash].js", // 每次保存 hash 都变化
     path: path.resolve(__dirname, "../dist"),
+    clean: true,
   },
   module: {},
   devServer: {
