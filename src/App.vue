@@ -3,14 +3,10 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-28 11:56:16
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 14:06:29
+ * @LastEditTime: 2022-02-09 13:25:30
 -->
 <template>
-  <div class="test">Hi 222</div>
+  <router-view></router-view>
 </template>
 <script setup></script>
-<style lang="less" scoped>
-.test {
-  color: red;
-}
-</style>
+<style lang="less" scoped></style>
