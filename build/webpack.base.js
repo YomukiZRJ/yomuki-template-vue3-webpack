@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 13:59:15
+ * @LastEditTime: 2022-02-09 14:51:09
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -19,7 +19,11 @@ module.exports = {
         use: ["vue-loader"],
       },
       {
-        test: /\.(css|less)$/,
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+      {
+        test: /\.less$/,
         use: ["style-loader", "css-loader", "postcss-loader", "less-loader"],
       },
       {
