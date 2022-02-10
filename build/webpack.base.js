@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-02-10 09:20:31
+ * @LastEditTime: 2022-02-10 09:54:14
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -16,12 +16,10 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        include: path.resolve("src"),
         use: ["vue-loader"],
       },
       {
         test: /\.css$/,
-        include: path.resolve("src"),
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
