@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-02-14 09:02:22
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-02-14 09:18:51
+ * @LastEditTime: 2022-02-14 09:24:52
  */
 import axios from "axios";
 class BaseApi {
@@ -83,3 +83,4 @@ class BaseApi {
     );
   }
 }
+export default new BaseApi({ baseURL: "" });
