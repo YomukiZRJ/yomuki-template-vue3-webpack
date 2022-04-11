@@ -3,12 +3,13 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-02-10 09:54:14
+ * @LastEditTime: 2022-04-11 14:04:37
  */
 const path = require("path"),
   chalk = require("chalk"),
   ProgressBarPlugin = require("progress-bar-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
+  CopyWebpackPlugin = require("copy-webpack-plugin"),
   { VueLoaderPlugin } = require("vue-loader/dist/index");
 module.exports = {
   entry: path.resolve(__dirname, "../src/main.js"), // 打包入口
@@ -83,6 +84,16 @@ module.exports = {
     ],
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          // 从public中复制文件
+          from: path.resolve(__dirname, "../public"),
+          // 把复制的文件存放到dis里面
+          to: path.resolve(__dirname, "../dist"),
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../index.html"), //  html 模板
       filename: "index.html", // 打包后输出的文件名
