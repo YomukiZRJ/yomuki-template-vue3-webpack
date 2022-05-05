@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-04-11 14:04:37
+ * @LastEditTime: 2022-04-27 11:00:20
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -17,6 +17,8 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
+        include: path.resolve("src"),
+        exclude: /node_modules/,
         use: ["vue-loader"],
       },
       {
@@ -32,7 +34,7 @@ module.exports = {
         test: /.js$/, //对所有js后缀的文件进行编译
         include: path.resolve("src"), //表示在src目录下的.js文件都要进行一下使用的loader
         use: [
-          "babel-loader",
+          "babel-loader?cacheDirectory=true",
           {
             loader: "thread-loader",
             options: {
@@ -111,6 +113,15 @@ module.exports = {
     alias: {
       //配置别名
       "@": path.resolve(__dirname, "../src"),
+    },
+  },
+  // 缓存
+  cache: {
+    // 将缓存类型设置为文件系统
+    type: "filesystem",
+    buildDependencies: {
+      // 推荐在 webpack 配置中设置 cache.buildDependencies.config: [__filename] 来获取最新配置以及所有依赖项
+      config: [__filename],
     },
   },
 };

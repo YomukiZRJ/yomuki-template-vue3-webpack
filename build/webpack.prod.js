@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 14:40:59
+ * @LastEditTime: 2022-04-27 10:57:54
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
@@ -15,7 +15,7 @@ module.exports = merge(common, {
   module: {},
   plugins: [
     new BundleAnalyzerPlugin({
-      openAnalyzer: true,
+      openAnalyzer: false, // 是否自动打开浏览器
     }),
   ],
   output: {
