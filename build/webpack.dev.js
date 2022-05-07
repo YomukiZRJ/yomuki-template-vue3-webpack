@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:36:51
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-01-29 14:23:03
+ * @LastEditTime: 2022-05-07 16:40:54
  */
 const { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
@@ -11,10 +11,13 @@ const { merge } = require("webpack-merge"),
 module.exports = merge(common, {
   mode: "development",
   output: {
-    filename: "js/[name].[hash].js", // 每次保存 hash 都变化
+    // filename: "js/[name].[hash].js", // 每次保存 hash 都变化 加快dev环境 去掉hash
+    filename: "js/[name].js",
     path: path.resolve(__dirname, "../dist"),
     clean: true,
   },
+  // 开发工具，开启 source map，编译调试 可以将编译后的代码映射回原始源代码。
+  devtool: "eval-cheap-module-source-map",
   module: {},
   devServer: {
     hot: true, //热更新
