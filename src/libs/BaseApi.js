@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-02-14 09:02:22
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-02-14 09:24:52
+ * @LastEditTime: 2022-05-12 10:35:22
  */
 import axios from "axios";
 class BaseApi {
@@ -18,10 +18,17 @@ class BaseApi {
     this._setInterceptorsResponse();
   }
   get(url, params = {}) {
-    return this.doRequest(url, "get", params, {});
+    return this.request(url, "get", params, {});
   }
   post(url, data = {}) {
-    return this.doRequest(url, "post", {}, data);
+    return this.request(url, "post", {}, data);
+  }
+  postFormData(url, data = {}) {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    return this.request(url, "post", {}, formData, "multipart/form-data");
   }
   request(url, method, params, data, contentType = "application/json") {
     // console.log(data);

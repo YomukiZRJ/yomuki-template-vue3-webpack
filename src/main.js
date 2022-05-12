@@ -3,10 +3,11 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-28 11:43:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-02-09 10:08:57
+ * @LastEditTime: 2022-05-12 10:36:23
  */
 
 import { createApp } from "vue"; // Vue 3.x 引入 vue 的形式
+import "./assets/style/reset.less";
 import App from "./App.vue"; // 引入 APP 页面组建
 
 import store from "./store"; // store
