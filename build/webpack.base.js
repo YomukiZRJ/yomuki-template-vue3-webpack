@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-04-27 11:00:20
+ * @LastEditTime: 2022-05-16 09:59:32
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -100,6 +100,11 @@ module.exports = {
       template: path.resolve(__dirname, "../index.html"), //  html 模板
       filename: "index.html", // 打包后输出的文件名
       title: "Yomuki", // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
+      minify: {
+        //压缩HTML
+        collapseWhitespace: true, //删除空格
+        removeComments: true, //干掉注释
+      },
     }),
     // vue
     new VueLoaderPlugin(),

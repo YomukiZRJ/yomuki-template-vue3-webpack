@@ -3,17 +3,19 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-04-27 10:57:54
+ * @LastEditTime: 2022-05-16 09:53:52
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
+  CompressionPlugin = require("compression-webpack-plugin"), // gzip压缩
   BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: "production",
   module: {},
   plugins: [
+    new CompressionPlugin(),
     new BundleAnalyzerPlugin({
       openAnalyzer: false, // 是否自动打开浏览器
     }),
