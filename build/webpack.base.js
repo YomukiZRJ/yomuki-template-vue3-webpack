@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-05-16 09:59:32
+ * @LastEditTime: 2022-05-16 10:29:55
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -13,6 +13,27 @@ const path = require("path"),
   { VueLoaderPlugin } = require("vue-loader/dist/index");
 module.exports = {
   entry: path.resolve(__dirname, "../src/main.js"), // 打包入口
+  optimization: {
+    // js分离
+    runtimeChunk: "single",
+    splitChunks: {
+      chunks: "all",
+      maxInitialRequests: Infinity,
+      minSize: 20000,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    },
+  },
   module: {
     rules: [
       {
