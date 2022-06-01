@@ -3,16 +3,29 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-05-16 09:53:52
+ * @LastEditTime: 2022-06-01 09:55:13
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
   CompressionPlugin = require("compression-webpack-plugin"), // gzip压缩
+  TerserWebpackPlugin = require("terser-webpack-plugin"),
   BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = merge(common, {
   mode: "production",
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserWebpackPlugin({
+        terserOptions: {
+          compress: {
+            pure_funcs: ["console.log"],
+          },
+        },
+      }),
+    ],
+  },
   module: {},
   plugins: [
     new CompressionPlugin(),
