@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:36:51
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-05-12 10:53:38
+ * @LastEditTime: 2022-07-07 14:10:11
  */
 const { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
@@ -23,7 +23,7 @@ module.exports = merge(common, {
     hot: true, //热更新
     open: false, //编译完自动打开浏览器
     compress: true, //开启gzip压缩
-    port: 8087, //开启端口号
+    port: process.env.APP_PORT, //开启端口号
     //托管的静态资源文件
     //可通过数组的方式托管多个静态资源文件
     static: {
@@ -32,6 +32,17 @@ module.exports = merge(common, {
     client: {
       //在浏览器端打印编译进度
       progress: true,
+    },
+    clientLogLevel: "none", // 可能的值有 none, error, warning 或者 info（默认值）。 控制台(console)将显示消息
+    proxy: {
+      "/api": {
+        target: "http://后端ip:后端端口/",
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: {
+          "^/api": "",
+        },
+      },
     },
   },
 });

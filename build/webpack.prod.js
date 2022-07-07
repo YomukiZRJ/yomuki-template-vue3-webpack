@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-06-01 09:55:13
+ * @LastEditTime: 2022-07-07 13:19:41
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
@@ -14,24 +14,12 @@ const path = require("path"),
 
 module.exports = merge(common, {
   mode: "production",
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserWebpackPlugin({
-        terserOptions: {
-          compress: {
-            pure_funcs: ["console.log"],
-          },
-        },
-      }),
-    ],
-  },
   module: {},
   plugins: [
-    new CompressionPlugin(),
     new BundleAnalyzerPlugin({
       openAnalyzer: false, // 是否自动打开浏览器
     }),
+    new CompressionPlugin(),
   ],
   output: {
     filename: "js/[name].[contenthash].js", //contenthash 若文件内容无变化，则contenthash 名称不变
@@ -63,5 +51,15 @@ module.exports = merge(common, {
         },
       },
     },
+    minimize: true,
+    minimizer: [
+      new TerserWebpackPlugin({
+        terserOptions: {
+          compress: {
+            pure_funcs: ["console.log"],
+          },
+        },
+      }),
+    ],
   },
 });

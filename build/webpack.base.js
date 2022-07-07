@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-05-16 10:29:55
+ * @LastEditTime: 2022-07-07 14:02:11
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -11,6 +11,8 @@ const path = require("path"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
   { VueLoaderPlugin } = require("vue-loader/dist/index");
+require("dotenv").config({ path: path.resolve(__dirname, "../env/.env." + process.env.NODE_ENV) });
+
 module.exports = {
   entry: path.resolve(__dirname, "../src/main.js"), // 打包入口
   optimization: {
@@ -113,14 +115,14 @@ module.exports = {
           // 从public中复制文件
           from: path.resolve(__dirname, "../public"),
           // 把复制的文件存放到dis里面
-          to: path.resolve(__dirname, "../dist"),
+          to: path.resolve(__dirname, "../dist/static"),
         },
       ],
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../index.html"), //  html 模板
       filename: "index.html", // 打包后输出的文件名
-      title: "Yomuki", // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
+      title: process.env.APP_NAME, // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
       minify: {
         //压缩HTML
         collapseWhitespace: true, //删除空格
