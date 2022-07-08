@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-07-07 14:02:11
+ * @LastEditTime: 2022-07-08 13:20:28
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -46,7 +46,28 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        oneOf: [
+          // 这里匹配 `<style module>`
+          {
+            resourceQuery: /module/,
+            use: [
+              "style-loader",
+              {
+                loader: "css-loader",
+                options: {
+                  modules: true,
+                  localIdentName: "[local]_[hash:base64:5]",
+                },
+              },
+              "postcss-loader",
+              "less-loader",
+            ],
+          },
+          // 这里匹配普通的 `<style>` 或 `<style scoped>`
+          {
+            use: ["style-loader", "css-loader", "postcss-loader", "less-loader"],
+          },
+        ],
       },
       {
         test: /\.less$/,
@@ -109,29 +130,38 @@ module.exports = {
     ],
   },
   plugins: [
+    /**
+     * 复制静态资源至
+     */
     new CopyWebpackPlugin({
       patterns: [
         {
-          // 从public中复制文件
-          from: path.resolve(__dirname, "../public"),
-          // 把复制的文件存放到dis里面
-          to: path.resolve(__dirname, "../dist/static"),
+          from: path.resolve(__dirname, "../public"), // 复制源
+          to: path.resolve(__dirname, "../dist/static"), // 目的源
         },
       ],
     }),
+    /**
+     * html文件处理
+     */
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../index.html"), //  html 模板
-      filename: "index.html", // 打包后输出的文件名
-      title: process.env.APP_NAME, // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
+      template: path.resolve(__dirname, "../index.html"), //  模板文件
+      filename: "index.html", // 输出name
+      title: process.env.APP_NAME, // 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
       minify: {
         //压缩HTML
         collapseWhitespace: true, //删除空格
         removeComments: true, //干掉注释
       },
     }),
-    // vue
+    /**
+     * vueLoader插件
+     * 它的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块。例如，如果你有一条匹配 /\.js$/ 的规则，那么它会应用到 .vue 文件里的 <script> 块。
+     */
     new VueLoaderPlugin(),
-    // 进度条
+    /**
+     * 进度条
+     */
     new ProgressBarPlugin({
       format: `  :msg [:bar] ${chalk.green.bold(":percent")} (:elapsed s)`,
     }),

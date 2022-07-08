@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:36:51
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-07-07 14:10:11
+ * @LastEditTime: 2022-07-08 09:40:57
  */
 const { merge } = require("webpack-merge"),
   common = require("./webpack.base.js"),
@@ -33,7 +33,6 @@ module.exports = merge(common, {
       //在浏览器端打印编译进度
       progress: true,
     },
-    clientLogLevel: "none", // 可能的值有 none, error, warning 或者 info（默认值）。 控制台(console)将显示消息
     proxy: {
       "/api": {
         target: "http://后端ip:后端端口/",
