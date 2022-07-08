@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-07-08 13:20:28
+ * @LastEditTime: 2022-07-08 13:26:21
  */
 const path = require("path"),
   chalk = require("chalk"),
@@ -60,6 +60,31 @@ module.exports = {
                 },
               },
               "postcss-loader",
+            ],
+          },
+          // 这里匹配普通的 `<style>` 或 `<style scoped>`
+          {
+            use: ["style-loader", "css-loader", "postcss-loader"],
+          },
+        ],
+      },
+      {
+        test: /\.less$/,
+        include: path.resolve("src"),
+        oneOf: [
+          // 这里匹配 `<style module>`
+          {
+            resourceQuery: /module/,
+            use: [
+              "style-loader",
+              {
+                loader: "css-loader",
+                options: {
+                  modules: true,
+                  localIdentName: "[local]_[hash:base64:5]",
+                },
+              },
+              "postcss-loader",
               "less-loader",
             ],
           },
@@ -68,11 +93,6 @@ module.exports = {
             use: ["style-loader", "css-loader", "postcss-loader", "less-loader"],
           },
         ],
-      },
-      {
-        test: /\.less$/,
-        include: path.resolve("src"),
-        use: ["style-loader", "css-loader", "postcss-loader", "less-loader"],
       },
       {
         test: /.js$/, //对所有js后缀的文件进行编译
