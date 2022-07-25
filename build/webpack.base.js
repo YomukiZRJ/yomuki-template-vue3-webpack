@@ -3,14 +3,17 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:07
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-07-08 13:26:21
+ * @LastEditTime: 2022-07-25 16:37:01
  */
 const path = require("path"),
   chalk = require("chalk"),
   ProgressBarPlugin = require("progress-bar-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
-  { VueLoaderPlugin } = require("vue-loader/dist/index");
+  { VueLoaderPlugin } = require("vue-loader/dist/index"),
+  CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin"),
+  ESLintPlugin = require("eslint-webpack-plugin"),
+  DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
 require("dotenv").config({ path: path.resolve(__dirname, "../env/.env." + process.env.NODE_ENV) });
 
 module.exports = {
@@ -43,6 +46,20 @@ module.exports = {
         include: path.resolve("src"),
         exclude: /node_modules/,
         use: ["vue-loader"],
+      },
+      {
+        test: /\.(js|jsx)$/, //对所有js后缀的文件进行编译
+        // include: path.resolve("src"), //表示在src目录下的.js文件都要进行一下使用的loader
+        exclude: /node_modules/,
+        use: [
+          "babel-loader?cacheDirectory=true",
+          {
+            loader: "thread-loader",
+            options: {
+              workers: 3,
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -94,19 +111,7 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /.js$/, //对所有js后缀的文件进行编译
-        include: path.resolve("src"), //表示在src目录下的.js文件都要进行一下使用的loader
-        use: [
-          "babel-loader?cacheDirectory=true",
-          {
-            loader: "thread-loader",
-            options: {
-              workers: 3,
-            },
-          },
-        ],
-      },
+
       // 在webpack5中，内置了资源模块（asset module），代替了file-loader和url-loader
       {
         test: /\.(png|jpe?g|gif|ico|bmp|svg)$/i,
@@ -150,6 +155,8 @@ module.exports = {
     ],
   },
   plugins: [
+    new ESLintPlugin(),
+    new CaseSensitivePathsPlugin(),
     /**
      * 复制静态资源至
      */
@@ -185,6 +192,10 @@ module.exports = {
     new ProgressBarPlugin({
       format: `  :msg [:bar] ${chalk.green.bold(":percent")} (:elapsed s)`,
     }),
+    /**
+     * 检测是否引入了一个包的多个版本
+     */
+    new DuplicatePackageCheckerPlugin(),
   ],
   resolve: {
     extensions: [".js", ".jsx", ".json", ".vue"], //省略文件后缀

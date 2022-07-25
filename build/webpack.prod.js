@@ -3,7 +3,7 @@
  * @Author: 曾茹菁
  * @Date: 2022-01-29 11:37:02
  * @LastEditors: 曾茹菁
- * @LastEditTime: 2022-07-07 13:19:41
+ * @LastEditTime: 2022-07-25 16:13:30
  */
 const path = require("path"),
   { merge } = require("webpack-merge"),
@@ -53,6 +53,9 @@ module.exports = merge(common, {
     },
     minimize: true,
     minimizer: [
+      /**
+       * 做压缩和混淆 https://github.com/terser/terser#minify-options
+       */
       new TerserWebpackPlugin({
         terserOptions: {
           compress: {
